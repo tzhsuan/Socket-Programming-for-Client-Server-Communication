@@ -22,8 +22,8 @@ This repository contains a simple UDP client-server implementation in C, demonst
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/tzhsuan/Socket-Programming-for-Client-Server-Communication
+   cd Socket-Programming-for-Client-Server-Communication
    ```
 2. Compile the server and client programs:
    ```bash
