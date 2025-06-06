@@ -1,18 +1,18 @@
 # UDP Client-Server Implementation in C
 
 ## Overview
-This repository contains a simple UDP client-server implementation in C, demonstrating basic socket programming for UDP communication. The server listens for incoming messages on a specified port, receives messages from the client, and responds with a predefined message. The client sends a message to the server and waits for a response. The implementation uses the `htons()` function to ensure proper byte order conversion for cross-platform compatibility.
+This repository contains a simple UDP client-server implementation in C, demonstrating basic socket programming for UDP communication. The server listens for incoming messages on port `12345`, receives messages from the client, and responds with a predefined message. The client sends a message to the server and waits for a response. The implementation uses the `htons()` function to ensure proper byte order conversion for cross-platform compatibility.
 
 ## Features
-- **Server**:
-  - Creates a UDP socket and binds to port `3000` on all available network interfaces (`INADDR_ANY`).
+- **Server** (`server.c`):
+  - Creates a UDP socket and binds to port `12345` on all available network interfaces (`INADDR_ANY`).
   - Receives messages from clients using `recvfrom()`.
   - Sends a response ("Hello from server") using `sendto()`.
-- **Client**:
+- **Client** (`client.c`):
   - Creates a UDP socket and sends a message ("Hello from client") to the server at `192.168.1.184:12345`.
   - Receives the server's response using `recvfrom()`.
 - Uses `htons()` to convert port numbers to network byte order (big-endian) for compatibility across systems.
-- Includes error handling for socket creation, binding, and message transmission.
+- Includes error handling for socket creation, binding, address conversion, and message transmission.
 
 ## Prerequisites
 - A C compiler (e.g., `gcc`).
@@ -36,7 +36,7 @@ This repository contains a simple UDP client-server implementation in C, demonst
    ```bash
    ./server
    ```
-   The server listens on port `3000` for incoming UDP messages.
+   The server listens on port `12345` for incoming UDP messages.
 
 2. **Run the client**:
    ```bash
@@ -49,14 +49,14 @@ This repository contains a simple UDP client-server implementation in C, demonst
 3. **Test with netcat (optional)**:
    Instead of the client program, you can use `netcat` to send a message to the server:
    ```bash
-   echo "Hello, Server!" | nc -u 127.0.0.1 3000
+   echo "Hello, Server!" | nc -u 127.0.0.1 12345
    ```
 
 ## Code Explanation
 - **Server (`server.c`)**:
   - Creates a UDP socket using `socket(AF_INET, SOCK_DGRAM, 0)`.
-  - Binds to port `3000` using `bind()` with `INADDR_ANY` to accept messages from any interface.
-  - Uses `htons(3000)` to convert the port number to network byte order.
+  - Binds to port `12345` using `bind()` with `INADDR_ANY` to accept messages from any interface.
+  - Uses `htons(12345)` to convert the port number to network byte order.
   - Receives client messages with `recvfrom()` and responds with `sendto()`.
 
 - **Client (`client.c`)**:
@@ -85,10 +85,9 @@ Client (received 17 bytes): Hello from server
 - The client is hardcoded to connect to `192.168.1.184:12345`. Ensure the server is running on the correct IP and update the client code if necessary.
 - The `htons()` function ensures port numbers are correctly interpreted in network byte order, critical for cross-platform compatibility.
 - The current implementation handles one message exchange and exits. For continuous communication, consider adding a loop to handle multiple messages.
-- The client and server use different ports (`3000` for the server, `12345` in the client code). This mismatch may cause issues unless the server is modified to listen on port `12345` or the client is updated to send to port `3000`.
 
 ## Troubleshooting
-- **Port Mismatch**: Ensure the client sends messages to the same port the server is listening on (e.g., change the client's `PORT` to `3000` or the server's to `12345`).
 - **IP Address**: Update the IP address in `client.c` to match the server's actual IP address.
-- **Firewall**: Ensure UDP traffic is allowed on the specified port (e.g., `3000` or `12345`).
+- **Firewall**: Ensure UDP traffic is allowed on port `12345`.
 - **Run Server First**: The server must be running before the client sends a message.
+- **Port Conflict**: Ensure no other application is using port `12345`.
