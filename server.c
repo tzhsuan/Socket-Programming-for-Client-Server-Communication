@@ -6,7 +6,7 @@
 #include<sys/types.h>
 #include<unistd.h>
 
-#define PORT 3000
+#define PORT 12345
 #define MSG "Hello from server"
 #define MAX_SIZE 1000
 
